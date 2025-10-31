@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Budget Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="light">
+
+  <!-- ===============================
+       TOP NAVIGATION BAR
+       =============================== -->
+  <header class="topbar">
+    <nav class="nav">
+      <button class="nav-btn active" data-page="home">Home</button>
+      <button class="nav-btn" data-page="accounts">Accounts</button>
+      <button class="nav-btn" data-page="reports">Reports</button>
+      <button class="nav-btn" data-page="settings">Settings</button>
+      <div class="spacer"></div>
+      <button id="themeToggle" class="theme-btn">🌙 Dark</button>
+    </nav>
+  </header>
+
+  <!-- ===============================
+       MAIN CONTENT
+       =============================== -->
+  <main>
+
+    <!-- HOME PAGE -->
+    <section id="home" class="page active">
+      <div class="layout">
+
+        <!-- LEFT COLUMN -->
+        <div class="col col-left">
+          
+          <!-- Income / Budget -->
+          <div class="card collapsible open" data-card="budgetCard">
+            <div class="card-head">
+              <h2>Add Budget / Income</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <input type="number" id="incomeAmount" placeholder="Amount">
+              <select id="incomeAccount"></select>
+              <button id="addIncomeBtn" class="btn primary">Add Income</button>
+            </div>
+          </div>
+
+          <!-- Expenses -->
+          <div class="card collapsible open" data-card="expenseCard">
+            <div class="card-head">
+              <h2>Add Expense</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <input type="text" id="expenseName" placeholder="Expense Title">
+              <input type="number" id="expenseAmount" placeholder="Amount">
+              <select id="expenseAccount"></select>
+              <select id="expenseCategory"></select>
+              <button id="addExpenseBtn" class="btn primary">Add Expense</button>
+            </div>
+          </div>
+
+          <!-- Recurring Items -->
+          <div class="card collapsible open" data-card="recurringCard">
+            <div class="card-head">
+              <h2>Recurring Items</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <input type="text" id="recurringName" placeholder="Name (Rent, Paycheck)">
+              <input type="number" id="recurringAmount" placeholder="Amount">
+              <select id="recurringAccount"></select>
+              <select id="recurringCategory"></select>
+              <select id="recurringType">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+              <select id="recurringFreq">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              <button id="addRecurringBtn" class="btn primary">Add Recurring</button>
+
+              <table class="table-sm">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Freq</th>
+                    <th>Next</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="recurringList"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <button id="resetAllBtn" class="btn danger full">Reset All Data</button>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col col-right">
+
+          <!-- Summary -->
+          <div class="card collapsible open" data-card="summaryCard">
+            <div class="card-head">
+              <h2>Summary</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body summary-row">
+              <div class="summary-box">
+                <p>Total Income</p>
+                <span id="totalIncome">0.00</span>
+              </div>
+              <div class="summary-box">
+                <p>Total Expenses</p>
+                <span id="totalExpenses">0.00</span>
+              </div>
+              <div class="summary-box">
+                <p>Net</p>
+                <span id="netBalance">0.00</span>
+              </div>
+              <div class="summary-box">
+                <p>Net Worth</p>
+                <span id="netWorth">0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions -->
+          <div class="card collapsible open" data-card="historyCard">
+            <div class="card-head">
+              <h2>Transactions</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Account</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="txList"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Goals -->
+          <div class="card collapsible open" data-card="goalsCard">
+            <div class="card-head">
+              <h2>Goals</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <div class="goal-add">
+                <input type="text" id="goalName" placeholder="Goal (New Laptop)">
+                <input type="number" id="goalTarget" placeholder="Target Amount">
+                <select id="goalAccount"></select>
+                <button id="addGoalBtn" class="btn primary">Add Goal</button>
+              </div>
+
+              <table class="table-sm">
+                <thead>
+                  <tr>
+                    <th>Goal</th>
+                    <th>Progress</th>
+                    <th>Target</th>
+                    <th>%</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="goalsList"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category Limits -->
+          <div class="card collapsible open" data-card="catLimitsCard">
+            <div class="card-head">
+              <h2>Category Limits</h2>
+              <button class="collapse-toggle">−</button>
+            </div>
+            <div class="card-body">
+              <div class="category-add">
+                <input type="text" id="newCategoryName" placeholder="Category Name (Food)">
+                <input type="number" id="newCategoryLimit" placeholder="Monthly Limit">
+                <button id="addCategoryBtn" class="btn primary">Add / Update Category</button>
+              </div>
+
+              <table class="table-sm">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Spent (This Month)</th>
+                    <th>Limit</th>
+                    <th>%</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="categoriesList"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCOUNTS PAGE -->
+    <section id="accounts" class="page">
+      <div class="layout single-col">
+        <div class="card collapsible open" data-card="accountsCard">
+          <div class="card-head">
+            <h2>Accounts</h2>
+            <button class="collapse-toggle">−</button>
+          </div>
+          <div class="card-body">
+            <div class="acct-add">
+              <input type="text" id="accountName" placeholder="Account Name (Cash, Bank)">
+              <input type="number" id="accountBalance" placeholder="Starting Balance">
+              <select id="accountCurrency">
+                <option value="AUD">AUD</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
+              </select>
+              <button id="addAccountBtn" class="btn primary">Add Account</button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Balance</th>
+                  <th>Currency</th>
+                  <th>Deposit</th>
+                  <th>Withdraw</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="accountsList"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <section id="reports" class="page">
+  <div class="layout single-col">
+
+    <div class="card collapsible open" data-card="insightsCard">
+      <div class="card-head">
+        <h2>Reports and Insights</h2>
+        <button class="collapse-toggle">−</button>
+      </div>
+
+      <div class="card-body">
+        <div id="reportsContainer">
+          <div class="report-card">
+            <h3>Monthly Summary</h3>
+            <div id="monthlySummary"></div>
+          </div>
+
+          <div class="report-card">
+            <h3>Spending by Category (This Month)</h3>
+            <canvas id="pieCategoryChart"></canvas>
+          </div>
+
+          <div class="report-card">
+            <h3>Spending Trends Over Time</h3>
+            <canvas id="lineTrendChart"></canvas>
+          </div>
+
+          <div class="report-card">
+            <h3>Income vs Expenses</h3>
+            <canvas id="barIncomeExpenseChart"></canvas>
+          </div>
+
+          <div class="report-card">
+            <h3>Net Worth Over Time</h3>
+            <canvas id="lineNetWorthChart"></canvas>
+          </div>
+
+          <div class="report-card">
+            <h3>Biggest Expenses (This Month)</h3>
+            <table class="table-sm">
+              <thead>
+                <tr><th>Title</th><th>Amount</th><th>Account</th></tr>
+              </thead>
+              <tbody id="biggestExpensesList"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="report-card">
+  <h3>Budget vs Actual (Category)</h3>
+  <canvas id="budgetVsActualChart"></canvas>
+</div>
+
+<div class="report-card">
+  <h3>Cash-flow (Monthly)</h3>
+  <canvas id="cashflowChart"></canvas>
+</div>
+
+<div class="report-card">
+  <h3>Net Worth Projection</h3>
+  <canvas id="netWorthProjectionChart"></canvas>
+</div>
+
+<div class="report-card">
+  <h3>Income Source Breakdown</h3>
+  <canvas id="incomeSourceChart"></canvas>
+</div>
+
+
+  </div>
+</section>
+
+
+    <!-- SETTINGS PAGE -->
+    <section id="settings" class="page">
+      <div class="layout single-col">
+        <div class="card collapsible open" data-card="exportCard">
+          <div class="card-head">
+            <h2>Data Export / Import</h2>
+            <button class="collapse-toggle">−</button>
+          </div>
+          <div class="card-body">
+            <div class="settings-row">
+              <button id="exportJsonBtn" class="btn primary">Export JSON</button>
+              <button id="exportCsvBtn" class="btn primary">Export CSV</button>
+            </div>
+            <div class="settings-row">
+              <input type="file" id="importFileInput" accept=".json,.csv">
+              <button id="importBtn" class="btn primary">Import Data</button>
+            </div>
+            <p class="hint">Import replaces all stored data with the file you load.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===============================
+       JAVASCRIPT FILES
+       =============================== -->
+  <script src="libs/chart.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/expenses.js"></script>
+  <script src="js/accounts.js"></script>
+  <script src="js/recur.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/exportImport.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
