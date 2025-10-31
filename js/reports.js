@@ -48,17 +48,27 @@ function getMonthlyData() {
   };
 }
 
-monthlySummaryEl.innerHTML = `
-  <div><strong>Income this month:</strong> ${fmt(d.monthIncome)}</div>
-  <div><strong>Expenses this month:</strong> ${fmt(d.monthExpense)}</div>
-  <div><strong>Average Monthly Savings:</strong> ${fmt(d.savings)}</div>
+function renderMonthlySummary() {
+  const d = getMonthlyData();
+  const accountLines = Object.entries(d.spendByAccount)
+    .map(([acc, amt]) => `${acc}: ${fmt(amt)}`)
+    .join("<br>");
+  const categoryLines = Object.entries(d.spendByCat)
+    .map(([cat, amt]) => `${cat}: ${fmt(amt)}`)
+    .join("<br>");
 
-  <span class="section-title">By Account (Expense)</span>
-  <div>${Object.entries(d.spendByAccount).map(([acc, amt]) => `${acc}: ${fmt(amt)}`).join("<br>") || "No data"}</div>
+  monthlySummaryEl.innerHTML = `
+    <div><strong>Income this month:</strong> ${fmt(d.monthIncome)}</div>
+    <div><strong>Expenses this month:</strong> ${fmt(d.monthExpense)}</div>
+    <div><strong>Average Monthly Savings:</strong> ${fmt(d.savings)}</div>
 
-  <span class="section-title">By Category (Expense)</span>
-  <div>${Object.entries(d.spendByCat).map(([cat, amt]) => `${cat}: ${fmt(amt)}`).join("<br>") || "No data"}</div>
-`;
+    <span class="section-title">By Account (Expense)</span>
+    <div>${accountLines || "No data"}</div>
+
+    <span class="section-title">By Category (Expense)</span>
+    <div>${categoryLines || "No data"}</div>
+  `;
+}
 
 function renderBiggestExpenses() {
   const d = getMonthlyData();

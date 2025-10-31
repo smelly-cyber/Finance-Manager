@@ -268,24 +268,52 @@
             <div id="monthlySummary"></div>
           </div>
 
-          <div class="report-card">
+          <div class="report-card" data-chart-wrapper="pieCategoryChart">
             <h3>Spending by Category (This Month)</h3>
-            <canvas id="pieCategoryChart"></canvas>
+            <div class="chart-area">
+              <canvas id="pieCategoryChart"></canvas>
+              <img class="chart-preview" alt="Spending by category preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
           </div>
 
-          <div class="report-card">
+          <div class="report-card" data-chart-wrapper="lineTrendChart">
             <h3>Spending Trends Over Time</h3>
-            <canvas id="lineTrendChart"></canvas>
+            <div class="chart-area">
+              <canvas id="lineTrendChart"></canvas>
+              <img class="chart-preview" alt="Spending trends preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
           </div>
 
-          <div class="report-card">
+          <div class="report-card" data-chart-wrapper="barIncomeExpenseChart">
             <h3>Income vs Expenses</h3>
-            <canvas id="barIncomeExpenseChart"></canvas>
+            <div class="chart-area">
+              <canvas id="barIncomeExpenseChart"></canvas>
+              <img class="chart-preview" alt="Income versus expenses preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
           </div>
 
-          <div class="report-card">
+          <div class="report-card" data-chart-wrapper="lineNetWorthChart">
             <h3>Net Worth Over Time</h3>
-            <canvas id="lineNetWorthChart"></canvas>
+            <div class="chart-area">
+              <canvas id="lineNetWorthChart"></canvas>
+              <img class="chart-preview" alt="Net worth preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
           </div>
 
           <div class="report-card">
@@ -297,31 +325,57 @@
               <tbody id="biggestExpensesList"></tbody>
             </table>
           </div>
+
+          <div class="report-card" data-chart-wrapper="budgetVsActualChart">
+            <h3>Budget vs Actual (Category)</h3>
+            <div class="chart-area">
+              <canvas id="budgetVsActualChart"></canvas>
+              <img class="chart-preview" alt="Budget versus actual preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card" data-chart-wrapper="cashflowChart">
+            <h3>Cash-flow (Monthly)</h3>
+            <div class="chart-area">
+              <canvas id="cashflowChart"></canvas>
+              <img class="chart-preview" alt="Cash-flow preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card" data-chart-wrapper="netWorthProjectionChart">
+            <h3>Net Worth Projection</h3>
+            <div class="chart-area">
+              <canvas id="netWorthProjectionChart"></canvas>
+              <img class="chart-preview" alt="Net worth projection preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card" data-chart-wrapper="incomeSourceChart">
+            <h3>Income Source Breakdown</h3>
+            <div class="chart-area">
+              <canvas id="incomeSourceChart"></canvas>
+              <img class="chart-preview" alt="Income source breakdown preview">
+              <div class="chart-controls">
+                <button class="btn inline primary" data-download="png">PNG</button>
+                <button class="btn inline secondary" data-download="jpg">JPG</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="report-card">
-  <h3>Budget vs Actual (Category)</h3>
-  <canvas id="budgetVsActualChart"></canvas>
-</div>
-
-<div class="report-card">
-  <h3>Cash-flow (Monthly)</h3>
-  <canvas id="cashflowChart"></canvas>
-</div>
-
-<div class="report-card">
-  <h3>Net Worth Projection</h3>
-  <canvas id="netWorthProjectionChart"></canvas>
-</div>
-
-<div class="report-card">
-  <h3>Income Source Breakdown</h3>
-  <canvas id="incomeSourceChart"></canvas>
-</div>
-
-
   </div>
 </section>
 

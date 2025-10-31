@@ -3,6 +3,46 @@ let pieCategoryChart,
     barIncomeExpenseChart,
     lineNetWorthChart;
 
+function updateChartUtilities(canvasId, chart) {
+  if (!chart) return;
+  const wrapper = document.querySelector(`[data-chart-wrapper="${canvasId}"]`);
+  if (!wrapper) return;
+
+  const title = wrapper.querySelector("h3")?.textContent?.trim() || canvasId;
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-") || canvasId;
+
+  const preview = wrapper.querySelector(".chart-preview");
+  if (preview && chart.canvas) {
+    try {
+      preview.src = chart.canvas.toDataURL("image/png");
+      preview.classList.add("visible");
+      preview.alt = `${title} preview`;
+    } catch {
+      preview.classList.remove("visible");
+    }
+  }
+
+  wrapper.querySelectorAll("[data-download]").forEach(btn => {
+    const format = btn.dataset.download === "jpg" ? "jpg" : "png";
+    btn.onclick = () => {
+      const mime = format === "jpg" ? "image/jpeg" : "image/png";
+      const dataUrl = chart.canvas.toDataURL(mime);
+      const date = new Date().toISOString().slice(0, 10);
+      const filename = `${slug}-${date}.${format}`;
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  });
+}
+
 function renderCharts() {
   const st = store.getState();
   const now = new Date();
@@ -34,6 +74,7 @@ function renderCharts() {
       }]
     }
   });
+  updateChartUtilities("pieCategoryChart", pieCategoryChart);
 
   // spending trend line (by day)
   const dailyMap = {};
@@ -63,6 +104,7 @@ function renderCharts() {
     },
     options: { responsive: true }
   });
+  updateChartUtilities("lineTrendChart", lineTrendChart);
 
   // income vs expenses bar (by month)
   const monthAgg = {};
@@ -101,11 +143,16 @@ function renderCharts() {
       scales: { y: { beginAtZero: true } }
     }
   });
+  updateChartUtilities("barIncomeExpenseChart", barIncomeExpenseChart);
 
   // net worth line (USD)
   const hist = st.netWorthHistory.slice().sort((a,b) => new Date(a.date)-new Date(b.date));
   const nwLabels = hist.map(h => h.date);
-  const nwData = hist.map(h => h.netWorthUSD);
+  const nwData = hist.map(h => {
+    if (typeof h.netWorthAUD === "number") return h.netWorthAUD;
+    if (typeof h.netWorthUSD === "number") return h.netWorthUSD;
+    return 0;
+  });
 
   if (lineNetWorthChart) lineNetWorthChart.destroy();
   lineNetWorthChart = new Chart(document.getElementById("lineNetWorthChart"), {
@@ -113,7 +160,7 @@ function renderCharts() {
     data: {
       labels: nwLabels,
       datasets: [{
-        label: "Net Worth (USD)",
+        label: "Net Worth (AUD)",
         data: nwData,
         borderColor: "#36a2eb",
         backgroundColor: "rgba(54,162,235,0.2)",
@@ -123,4 +170,5 @@ function renderCharts() {
     },
     options: { responsive: true }
   });
+  updateChartUtilities("lineNetWorthChart", lineNetWorthChart);
 }

@@ -94,14 +94,15 @@ body {
    LAYOUT
    =============================== */
 .layout {
-  display: flex;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
   gap: 20px;
   max-width: 1200px;
   margin: 30px auto;
   align-items: flex-start;
 }
 .layout.single-col {
-  flex-direction: column;
+  grid-template-columns: 1fr;
   max-width: 900px;
 }
 
@@ -111,14 +112,16 @@ body {
   padding: 20px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   border: 1px solid var(--border-color);
-  flex: 1;
+  width: 100%;
   min-width: 0;
+  box-sizing: border-box;
 }
 .col-left {
-  max-width: 360px;
-  flex: 0 0 360px;
+  max-width: 100%;
 }
-.col-right { flex: 1; }
+.col-right {
+  max-width: 100%;
+}
 
 /* ===============================
    CARDS
@@ -197,6 +200,15 @@ input:focus, select:focus {
 .btn.primary:hover { background: var(--accent-dark); }
 .btn.danger { background: var(--danger); }
 .btn.danger:hover { background: var(--danger-dark); }
+.btn.secondary {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.btn.secondary:hover {
+  background: var(--accent);
+  color: #fff;
+}
 
 .btn.inline {
   width: auto;
@@ -290,6 +302,30 @@ th, td {
   font-weight: 600;
 }
 
+.chart-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chart-preview {
+  max-width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: #fff;
+  display: none;
+}
+
+.chart-preview.visible {
+  display: block;
+}
+
 /* Monthly summary block */
 #monthlySummary {
   background: var(--panel-bg);
@@ -370,13 +406,13 @@ th, td {
   }
 }
 
-#reports .layout.single-col {
-  display: block;
-}
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
 
-#reportsContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 20px;
+  .layout.single-col {
+    max-width: 100%;
+  }
 }
 

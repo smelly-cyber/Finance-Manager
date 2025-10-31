@@ -3,37 +3,6 @@ const exportCsvBtn = document.getElementById("exportCsvBtn");
 const importFileInput = document.getElementById("importFileInput");
 const importBtn = document.getElementById("importBtn");
 
-// chart export buttons (attach to canvases)
-function exportChartPng(canvasId, filename) {
-  const c = document.getElementById(canvasId);
-  if (!c) return;
-  const url = c.toDataURL("image/png");
-  downloadFile(url, filename);
-}
-
-function attachChartExportButtons() {
-  const map = {
-    pieCategoryChart: "spending-by-category.png",
-    lineTrendChart: "spending-trend.png",
-    barIncomeExpenseChart: "income-vs-expenses.png",
-    lineNetWorthChart: "net-worth.png",
-    budgetVsActualChart: "budget-vs-actual.png",
-    cashflowChart: "cashflow.png",
-    netWorthProjectionChart: "net-worth-projection.png",
-    incomeSourceChart: "income-sources.png"
-  };
-  Object.entries(map).forEach(([id, name]) => {
-    const canvas = document.getElementById(id);
-    if (!canvas) return;
-    if (canvas.nextElementSibling?.classList?.contains("chart-export")) return;
-    const btn = document.createElement("button");
-    btn.className = "btn inline primary chart-export";
-    btn.textContent = "Export PNG";
-    btn.addEventListener("click", ()=>exportChartPng(id, name));
-    canvas.parentElement.appendChild(btn);
-  });
-}
-
 // backups: keep last N snapshots in localStorage
 function scheduleBackupIfDue() {
   const key = k("lastBackupTs");
@@ -162,5 +131,4 @@ function splitCsvLine(line) {
 // run once on load
 window.addEventListener("load", () => {
   scheduleBackupIfDue();
-  setTimeout(attachChartExportButtons, 400);
 });
